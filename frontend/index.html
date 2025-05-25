@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous ASPICE Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <div id="app" class="p-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="bg-white rounded-lg shadow-sm border p-6 mb-8">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                            🧠 Autonomous ASPICE Platform
+                        </h1>
+                        <p class="text-gray-600">
+                            AI-powered consulting with Claude agents
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                            ⚡ <span id="agent-count">5</span> Agents Active
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" onclick="createProject()">
+                            ➕ New Project
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Active Projects</p>
+                            <p class="text-2xl font-bold text-gray-900" id="project-count">1</p>
+                        </div>
+                        <div class="text-blue-600 text-2xl">🎯</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">AI Agents</p>
+                            <p class="text-2xl font-bold text-gray-900" id="agent-count-2">5</p>
+                        </div>
+                        <div class="text-green-600 text-2xl">🧠</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Assessments</p>
+                            <p class="text-2xl font-bold text-gray-900">12</p>
+                        </div>
+                        <div class="text-purple-600 text-2xl">📊</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Reports Generated</p>
+                            <p class="text-2xl font-bold text-gray-900">34</p>
+                        </div>
+                        <div class="text-orange-600 text-2xl">📄</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Projects -->
+            <div class="bg-white rounded-lg shadow-sm border p-6 mb-8">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">🎯 Recent Projects</h2>
+                <div id="projects-container">
+                    <!-- Projects will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Autonomous Agents -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">🧠 Autonomous Agents</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="border-l-4 border-l-green-500 bg-gray-50 p-4 rounded">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-medium text-gray-900">Project Orchestrator</h4>
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
+                                ✅ active
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600">Manages project workflows and coordination</p>
+                    </div>
+
+                    <div class="border-l-4 border-l-green-500 bg-gray-50 p-4 rounded">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-medium text-gray-900">Gap Analysis Expert</h4>
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
+                                ✅ active
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600">Analyzes ASPICE gaps and provides recommendations</p>
+                    </div>
+
+                    <div class="border-l-4 border-l-green-500 bg-gray-50 p-4 rounded">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-medium text-gray-900">Documentation Strategy</h4>
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
+                                ✅ active
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600">Creates and manages project documentation</p>
+                    </div>
+
+                    <div class="border-l-4 border-l-green-500 bg-gray-50 p-4 rounded">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-medium text-gray-900">Entity Extraction</h4>
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
+                                ✅ active
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600">Extracts entities from documents and conversations</p>
+                    </div>
+
+                    <div class="border-l-4 border-l-green-500 bg-gray-50 p-4 rounded">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-medium text-gray-900">Report Generation</h4>
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
+                                ✅ active
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600">Generates comprehensive ASPICE reports</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Base URL
+        const API_BASE = 'http://localhost:12000';
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProjects();
+            loadAgentStatus();
+        });
+
+        async function loadProjects() {
+            try {
+                const response = await fetch(`${API_BASE}/api/projects/`);
+                const projects = await response.json();
+                
+                document.getElementById('project-count').textContent = projects.length;
+                
+                const container = document.getElementById('projects-container');
+                
+                if (projects.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-8">
+                            <div class="text-6xl mb-4">🎯</div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">No projects yet</h3>
+                            <p class="text-gray-500 mb-4">Create your first ASPICE consulting project</p>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" onclick="createProject()">
+                                ➕ Create Project
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = projects.map(project => `
+                        <div class="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 mb-4">
+                            <div>
+                                <h4 class="font-medium text-gray-900">${project.name}</h4>
+                                <p class="text-sm text-gray-500">${project.client_company}</p>
+                                <p class="text-xs text-gray-400">${project.description}</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm">${project.status}</span>
+                                <button class="border border-gray-300 px-3 py-1 rounded text-sm hover:bg-gray-50" onclick="viewProject('${project.id}')">
+                                    View
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                document.getElementById('projects-container').innerHTML = `
+                    <div class="text-center py-8 text-red-600">
+                        <p>Error loading projects. Please check if the backend is running.</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadAgentStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/agents/status`);
+                const status = await response.json();
+                
+                const agentCount = status.agents_registered || 5;
+                document.getElementById('agent-count').textContent = agentCount;
+                document.getElementById('agent-count-2').textContent = agentCount;
+            } catch (error) {
+                console.error('Error loading agent status:', error);
+            }
+        }
+
+        function createProject() {
+            // For now, just show an alert
+            alert('Project creation form will be implemented next!');
+        }
+
+        function viewProject(projectId) {
+            alert(`Viewing project ${projectId} - detailed view coming soon!`);
+        }
+
+        // Auto-refresh data every 30 seconds
+        setInterval(() => {
+            loadProjects();
+            loadAgentStatus();
+        }, 30000);
+    </script>
+</body>
+</html>
