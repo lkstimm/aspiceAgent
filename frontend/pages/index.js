@@ -44,10 +44,13 @@ export default function Home() {
             </div>
             <div className="flex items-center space-x-4">
               <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                ⚡ {agentStatus.agents_registered || 0} Agents Active
+                ⚡ {agentStatus.total_agents || 0} Agents Active
               </div>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                ➕ New Project
+              <button 
+                onClick={() => window.location.href = '/onboarding'}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                🚀 Start Autonomous Onboarding
               </button>
             </div>
           </div>
@@ -68,7 +71,7 @@ export default function Home() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">AI Agents</p>
-                <p className="text-2xl font-bold text-gray-900">{agentStatus.agents_registered || 0}</p>
+                <p className="text-2xl font-bold text-gray-900">{agentStatus.total_agents || 0}</p>
               </div>
               <div className="text-green-600 text-2xl">🧠</div>
             </div>
@@ -102,8 +105,11 @@ export default function Home() {
               <div className="text-6xl mb-4">🎯</div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">No projects yet</h3>
               <p className="text-gray-500 mb-4">Create your first ASPICE consulting project</p>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                ➕ Create Project
+              <button 
+                onClick={() => window.location.href = '/onboarding'}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                🚀 Start Autonomous Onboarding
               </button>
             </div>
           ) : (

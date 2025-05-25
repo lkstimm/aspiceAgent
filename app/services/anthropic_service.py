@@ -12,6 +12,27 @@ logger = logging.getLogger(__name__)
 _anthropic_client = None
 
 
+class AnthropicService:
+    """Service for interacting with Anthropic Claude API"""
+    
+    def __init__(self):
+        self.client = get_anthropic_client()
+    
+    async def generate_response(self, messages: list, system_prompt: str = "", model: str = "claude-3-sonnet-20240229") -> str:
+        """Generate a response using Claude"""
+        try:
+            response = await self.client.messages.create(
+                model=model,
+                max_tokens=4000,
+                system=system_prompt,
+                messages=messages
+            )
+            return response.content[0].text
+        except Exception as e:
+            logger.error(f"Error generating Claude response: {e}")
+            return f"Error: {str(e)}"
+
+
 def get_anthropic_client() -> AsyncAnthropic:
     """Get Anthropic client (singleton)"""
     global _anthropic_client

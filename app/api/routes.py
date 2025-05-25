@@ -142,10 +142,34 @@ async def onboard_project_data(
     )
     
     return {
-        "message": "Project onboarding initiated",
+        "message": "Autonomous project onboarding initiated",
         "project_id": project_id,
-        "status": "processing"
+        "status": "processing",
+        "description": "AI agents are now autonomously setting up your project"
     }
+
+
+@projects.get("/{project_id}/onboarding-status")
+async def get_onboarding_status(
+    project_id: str,
+    db: Session = Depends(get_db)
+):
+    """Get the current status of the autonomous onboarding process"""
+    # Verify project exists
+    project = db.query(Project).filter(Project.id == project_id).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    try:
+        from app.services.autonomous_onboarding import AutonomousOnboardingService
+        
+        onboarding_service = AutonomousOnboardingService()
+        status = await onboarding_service.get_onboarding_status(project_id)
+        
+        return status
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get onboarding status: {str(e)}")
 
 
 @projects.post("/{project_id}/gap-analysis")
@@ -263,6 +287,31 @@ async def execute_workflow(
 
 
 # Report routes
+@reports.post("/{project_id}/generate")
+async def generate_report(
+    project_id: str,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db)
+):
+    """Generate a comprehensive report for a project using AI agents"""
+    # Verify project exists
+    project = db.query(Project).filter(Project.id == project_id).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    # Trigger report generation workflow
+    background_tasks.add_task(
+        trigger_report_generation,
+        project_id
+    )
+    
+    return {
+        "message": "Report generation initiated",
+        "project_id": project_id,
+        "status": "processing"
+    }
+
+
 @reports.get("/{project_id}/gap-analysis")
 async def get_gap_analysis_report(
     project_id: str,
@@ -442,9 +491,29 @@ async def get_document(
 # Background task functions
 async def trigger_project_onboarding(project_id: str, project_data: Dict[str, Any]):
     """Trigger autonomous project onboarding workflow"""
-    # This would use the actual agent orchestrator
-    print(f"Triggering project onboarding for {project_id}")
-    # Implementation would call the ProjectOrchestrator agent
+    try:
+        from app.services.autonomous_onboarding import AutonomousOnboardingService
+        
+        print(f"🚀 Starting autonomous onboarding for project {project_id}")
+        
+        # Initialize the autonomous onboarding service
+        onboarding_service = AutonomousOnboardingService()
+        
+        # Execute the complete onboarding workflow
+        result = await onboarding_service.initiate_autonomous_onboarding(project_id, project_data)
+        
+        print(f"✅ Autonomous onboarding completed for project {project_id}")
+        print(f"Result: {result.get('status', 'unknown')}")
+        
+        return result
+        
+    except Exception as e:
+        print(f"❌ Error in autonomous onboarding for project {project_id}: {str(e)}")
+        return {
+            "project_id": project_id,
+            "status": "error",
+            "error": str(e)
+        }
 
 
 async def trigger_gap_analysis(project_id: str, assessment_id: str, analysis_request: Dict[str, Any]):
@@ -454,10 +523,10 @@ async def trigger_gap_analysis(project_id: str, assessment_id: str, analysis_req
     # Implementation would call the GapAnalysisExpert agent
 
 
-async def trigger_report_generation(project_id: str, report_type: str, report_request: Dict[str, Any]):
+async def trigger_report_generation(project_id: str):
     """Trigger autonomous report generation"""
     # This would use the actual agent orchestrator
-    print(f"Triggering report generation for project {project_id}, type {report_type}")
+    print(f"Triggering comprehensive report generation for project {project_id}")
     # Implementation would call the ReportGeneration agent
 
 
